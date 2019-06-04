@@ -5,6 +5,7 @@ set -e
 veth_if=eth0
 kernel=${kernel:-/vmlinux}
 root_img=${root_img:-/root.img}
+log_path=${firecracker_log:-/dev/null}
 
 macaddr=$(ip link show ${veth_if} | perl -n -e 'm#link/ether\s+(\S+)# && print "$1"')
 addrcidr=$(ip -oneline addr show dev ${veth_if} | awk '{print $4}')
@@ -36,4 +37,5 @@ exec firectl --kernel "$kernel" \
 	--cpu-template=T2 \
 	--ncpus=2 \
 	--kernel-opts="rw console=ttyS0 noapic reboot=k panic=1 pci=off nomodules root=/dev/vda ip=${addr}::${gw}:${netmask}:::off::::" \
-	--tap-device "fctap0/$macaddr"
+	--tap-device "fctap0/$macaddr" \
+	--firecracker-log="$log_path"
