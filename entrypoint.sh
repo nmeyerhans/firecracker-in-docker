@@ -3,6 +3,8 @@
 set -e
 
 veth_if=eth0
+kernel=${kernel:-/vmlinux}
+root_img=${root_img:-/root.img}
 
 macaddr=$(ip link show ${veth_if} | perl -n -e 'm#link/ether\s+(\S+)# && print "$1"')
 addrcidr=$(ip -oneline addr show dev ${veth_if} | awk '{print $4}')
@@ -28,7 +30,7 @@ tc filter add dev fctap0 \
    match u8 0 0 \
    action mirred egress redirect dev ${veth_if}
 
-firectl --kernel "$kernel" \
+exec firectl --kernel "$kernel" \
 	--root-drive "$root_img" \
 	--disable-hyperthreading \
 	--cpu-template=T2 \
