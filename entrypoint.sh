@@ -2,11 +2,15 @@
 
 set -e
 
-veth_if=eth0
 kernel=${kernel:-/vmlinux}
 root_img=${root_img:-/root.img}
 log_path=${firecracker_log:-/dev/null}
 
+cpu_cnt=${CPU_COUNT:-1}
+mem_mb=${MEM_MB:-256}
+cpu_template=${CPU_TEMPLATE:-T2}
+
+veth_if=eth0
 macaddr=$(ip link show ${veth_if} | perl -n -e 'm#link/ether\s+(\S+)# && print "$1"')
 addrcidr=$(ip -oneline addr show dev ${veth_if} | awk '{print $4}')
 addr=$(echo "$addrcidr" | cut -d/ -f1)
@@ -34,8 +38,9 @@ tc filter add dev fctap0 \
 exec firectl --kernel "$kernel" \
 	--root-drive "$root_img" \
 	--disable-hyperthreading \
-	--cpu-template=T2 \
-	--ncpus=2 \
+	--cpu-template=${cpu_template} \
+	--ncpus=${cpu_cnt} \
+	--memory=${mem_mb} \
 	--kernel-opts="rw console=ttyS0 noapic reboot=k panic=1 pci=off nomodules root=/dev/vda ip=${addr}::${gw}:${netmask}:::off::::" \
 	--tap-device "fctap0/$macaddr" \
 	--firecracker-log="$log_path"

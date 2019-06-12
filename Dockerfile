@@ -2,6 +2,10 @@ FROM debian:stretch-slim
 
 COPY vmlinux firecracker firectl /usr/local/bin/
 
+ENV CPU_COUNT 1
+ENV MEM_MB 256
+ENV CPU_TEMPLATE T2
+
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get -y install \
 	iproute2 \
