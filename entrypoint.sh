@@ -2,7 +2,7 @@
 
 set -e
 
-kernel=${kernel:-/vmlinux}
+kernel=${kernel:-/usr/local/bin/vmlinux}
 root_img=${root_img:-/root.img}
 log_path=${firecracker_log:-/dev/null}
 
