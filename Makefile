@@ -14,7 +14,7 @@ $(IMAGE):
 	--security-opt=apparmor=unconfined \
 	--rm \
 	-v $(IMAGE):/img \
-	debian:stretch sh -c " id && apt-get update && apt-get --no-install-recommends -y install debootstrap && debootstrap stretch /mnt && sed -i 's|root:\*:|root::|' /mnt/etc/shadow && mkfs.ext4 -d /mnt /img"
+	debian:stretch sh -c " id && apt-get update && apt-get --no-install-recommends -y install debootstrap && debootstrap --include=tcpdump stretch /mnt && sed -i 's|root:\*:|root::|' /mnt/etc/shadow && mkfs.ext4 -d /mnt /img"
 	touch .image
 
 install: .image
