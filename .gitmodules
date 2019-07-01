@@ -1,3 +1,6 @@
 [submodule "_submodules/firectl"]
 	path = _submodules/firectl
 	url = https://github.com/firecracker-microvm/firectl.git
+[submodule "_submodules/firecracker"]
+	path = _submodules/firecracker
+	url = https://github.com/firecracker-microvm/firecracker.git
