@@ -13,4 +13,6 @@ RUN apt-get update && \
 
 COPY vmlinux firecracker firectl /usr/local/bin/
 COPY entrypoint.sh /entrypoint
-ENTRYPOINT /entrypoint
+STOPSIGNAL SIGTERM
+ENTRYPOINT [ "/entrypoint" ]
+CMD []
