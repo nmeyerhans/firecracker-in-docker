@@ -59,6 +59,12 @@ tc filter add dev ${tap_if} \
    match ip6 dst any \
    action mirred egress redirect dev ${veth_if}
 
+add_drives=""
+for f in /drives/*; do
+    test -f "${f}" || continue
+    add_drives+=" --add-drive=/${f}:rw "
+done
+
 exec firectl --kernel "$kernel" \
 	--root-drive "$root_img" \
 	--disable-hyperthreading \
@@ -67,4 +73,5 @@ exec firectl --kernel "$kernel" \
 	--memory=${mem_mb} \
 	--kernel-opts="rw console=ttyS0 noapic reboot=k panic=1 pci=off nomodules root=/dev/vda ip=${addr}::${gw}:${netmask}:::off::::" \
 	--tap-device "${tap_if}/$macaddr" \
-	--firecracker-log="$log_path"
+	--firecracker-log="$log_path" \
+	${add_drives}

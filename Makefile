@@ -63,7 +63,15 @@ container: vmlinux firectl firecracker
 	docker build -t fc .
 
 run:
-	docker run -v $(IMAGE):/root.img --device /dev/kvm:/dev/kvm:rw --device /dev/net/tun:/dev/net/tun:rw --cap-add=net_admin -e CPU_COUNT -e MEM_MB -e CPU_TEMPLATE -it --rm fc
+	docker run -v $(IMAGE):/root.img \
+		--device /dev/kvm:/dev/kvm:rw \
+		--device /dev/net/tun:/dev/net/tun:rw \
+		--cap-add=net_admin \
+		-e CPU_COUNT \
+		-e MEM_MB \
+		-e CPU_TEMPLATE \
+		$(EXTRA) \
+		-it --rm fc
 
 clean:
 	-rm -f image .image vmlinux firectl firecracker
