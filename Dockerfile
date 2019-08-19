@@ -18,6 +18,7 @@ ENV CPU_TEMPLATE T2
 
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get -y install \
+	libcap2-bin \
 	iproute2 \
 	ipcalc && \
 	apt-get clean && \
